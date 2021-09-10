@@ -12,16 +12,17 @@ import java.util.*
 @Parcelize
 class CountriesData(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    val name: @RawValue Name?,
-    val tld: List<String>?,
-    val currency: List<String>?,
-    val callingCode: List<String>?,
+    val name: String?,
+    val topLevelDomain: List<String>?,
+    val currencies: List<Currencies>?,
+    val callingCodes: List<String>?,
     val capital: String?,
     val region: String?,
     val subregion: String?,
-    val nativeLanguage: @RawValue Languages?,
+    val languages: List<Languages>?,
     val translations: Translations?,
-    val denonym: String?,
+    val demonym: String?,
     val borders: List<String>?,
+    val flag: String?,
     val area: Double?
 ) : Parcelable

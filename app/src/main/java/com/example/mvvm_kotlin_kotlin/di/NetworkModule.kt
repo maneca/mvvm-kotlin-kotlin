@@ -40,7 +40,7 @@ val networkModule = module {
 
     single { provideHttpClient() }
     single {
-        //val baseUrl = androidContext().getString(R.string.BASE_URL)
-        //provideRetrofit(get(), baseUrl)
+        val baseUrl = androidContext().getString(R.string.BASE_URL)
+        provideRetrofit(get(), baseUrl)
     }
 }

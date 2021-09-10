@@ -6,16 +6,16 @@ import androidx.room.TypeConverters
 import com.example.mvvm_kotlin_kotlin.db.converters.*
 import com.example.mvvm_kotlin_kotlin.db.dao.CountriesDao
 import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
+import com.example.mvvm_kotlin_kotlin.db.model.Currencies
 import com.example.mvvm_kotlin_kotlin.db.model.Languages
-import com.example.mvvm_kotlin_kotlin.db.model.Name
 import com.example.mvvm_kotlin_kotlin.db.model.Translations
 
 @Database(
-    entities = [CountriesData::class, Languages::class, Name::class, Translations::class],
-    version = 1, exportSchema = false
+    entities = [CountriesData::class, Translations::class, Languages::class, Currencies::class],
+    version = 2, exportSchema = false
 )
 
-@TypeConverters(Converters::class, LanguagesTypeConverter::class, NameConverter::class, NativeConverter::class, TranslationsConverter::class)
+@TypeConverters(Converters::class, TranslationsConverter::class, LanguagesConverter::class, CurrenciesConverter::class)
 abstract class CountriesDatabase : RoomDatabase(){
     abstract val countriesDao : CountriesDao
 }

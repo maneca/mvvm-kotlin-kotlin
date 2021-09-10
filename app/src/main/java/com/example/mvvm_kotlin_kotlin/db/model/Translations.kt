@@ -9,14 +9,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Translations(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    val cym: String?,
-    val deu: String?,
-    val fra: String?,
-    val hrv: String?,
-    val ita: String?,
-    val jpn: String?,
-    val nld: String?,
-    val por: String?,
-    val rus: String?,
-    val spa: String?
+    val de: String?,
+    val es: String?,
+    val fr: String?,
+    val ja: String?,
+    val it: String?
 ) : Parcelable

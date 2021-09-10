@@ -1,5 +1,7 @@
 package com.example.mvvm_kotlin_kotlin.viewmodel
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
@@ -13,10 +15,14 @@ import kotlinx.coroutines.launch
 class CountriesViewModel(private val repository: CountriesRepository) : ViewModel() {
 
     val showLoading = ObservableBoolean()
-    val countriesList = MutableLiveData<List<CountriesData>>()
+    val countriesList : MutableState<List<CountriesData>> = mutableStateOf(ArrayList())
     val showError = SingleLiveEvent<String?>()
 
-    fun getAllCountries() {
+    init {
+        getAllCountries()
+    }
+
+    private fun getAllCountries() {
 
         showLoading.set(true)
 
@@ -26,7 +32,7 @@ class CountriesViewModel(private val repository: CountriesRepository) : ViewMode
             showLoading.set(false)
             when(result){
                 is AppResult.Success -> {
-                    countriesList.value = result.successData!!
+                    countriesList.value = result.successData
                     showError.value = null
                 }
                 is AppResult.Error -> showError.value = result.exception.message

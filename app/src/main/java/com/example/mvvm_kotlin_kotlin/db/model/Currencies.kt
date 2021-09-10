@@ -5,10 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "Native")
+@Entity(tableName = "Currency")
 @Parcelize
-data class Native (
+class Currencies (
     @PrimaryKey(autoGenerate = true) val id: Int,
-    val common: String? = "",
-    val official: String? = ""
-) : Parcelable
+    val code: String?,
+    val name: String?,
+    val symbol: String?
+): Parcelable

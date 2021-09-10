@@ -7,21 +7,10 @@ import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "Languages")
 @Parcelize
-data class Languages (
+class Languages(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    val bwg: String?,
-    val eng: String?,
-    val kck: String?,
-    val khi: String?,
-    val ndc: String?,
-    val nde: String?,
-    val nya: String?,
-    val sna: String?,
-    val sot: String?,
-    val toi: String?,
-    val tsn: String?,
-    val tso: String?,
-    val ven: String?,
-    val xho: String?,
-    val zib: String?
+    val iso639_1: String?,
+    val iso639_2: String?,
+    val name: String?,
+    val nativeName: String?
 ) : Parcelable
