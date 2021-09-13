@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/countriesFragment">
+
+    <fragment
+        android:id="@+id/countriesFragment"
+        android:name="com.example.mvvm_kotlin_kotlin.ui.CountriesFragment"
+        android:label="CountriesFragment" >
+        <action
+            android:id="@+id/view_country_details"
+            app:destination="@id/countriesDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/countriesDetailsFragment"
+        android:name="com.example.mvvm_kotlin_kotlin.ui.CountriesDetailsFragment"
+        android:label="CountriesDetailsFragment" />
+</navigation>

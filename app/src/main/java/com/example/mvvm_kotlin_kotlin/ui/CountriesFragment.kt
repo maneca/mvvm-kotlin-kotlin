@@ -19,7 +19,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
@@ -32,6 +31,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.LocalImageLoader
@@ -46,7 +46,6 @@ class CountriesFragment : Fragment() {
     private val countriesViewModel by viewModel<CountriesViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
          return ComposeView(requireContext()).apply {
             setContent {
                 val countries = countriesViewModel.countriesList.value
@@ -86,7 +85,11 @@ class CountriesFragment : Fragment() {
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .padding(2.dp)
-                .clickable { },
+                .clickable {
+                    val bundle : Bundle = Bundle()
+                    bundle.putParcelable("country_data_row", country)
+                    findNavController().navigate(R.id.view_country_details, bundle)
+                },
             elevation = 4.dp,
         ){
             Row(modifier = Modifier
