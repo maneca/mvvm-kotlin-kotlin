@@ -24,5 +24,6 @@ class CountriesData(
     val demonym: String?,
     val borders: List<String>?,
     val flag: String?,
-    val area: Double?
+    val area: Double?,
+    var isFavourite: Boolean = false
 ) : Parcelable

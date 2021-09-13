@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mvvm-kotlin-kotlin</string>
+    <string name="app_name">My Countries</string>
     <string name="no_network_connectivity">You are not connected to the internet</string>
     <string name="BASE_URL">https://restcountries.eu</string>
     <string name="country_region">Region:</string>

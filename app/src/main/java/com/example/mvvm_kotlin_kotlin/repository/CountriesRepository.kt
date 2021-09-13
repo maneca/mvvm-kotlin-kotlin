@@ -6,4 +6,6 @@ import com.example.mvvm_kotlin_kotlin.utils.AppResult
 interface CountriesRepository {
 
     suspend fun getAllCountries(): AppResult<List<CountriesData>>
+
+    suspend fun updateFavourite(countryId: Int, isFavourite: Boolean)
 }

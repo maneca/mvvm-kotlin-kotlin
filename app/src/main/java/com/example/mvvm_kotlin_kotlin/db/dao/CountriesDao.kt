@@ -12,6 +12,9 @@ interface CountriesDao {
     @Query("SELECT * FROM Countries")
     fun findAll(): List<CountriesData>
 
+    @Query("UPDATE Countries SET isFavourite = :isFavourite WHERE id = :countryId")
+    fun updateFavourite(countryId: Int, isFavourite: Boolean)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(users: List<CountriesData>)
 }

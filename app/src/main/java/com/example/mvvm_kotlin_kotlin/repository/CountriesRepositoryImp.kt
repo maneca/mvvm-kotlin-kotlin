@@ -22,30 +22,38 @@ class CountriesRepositoryImp(
 ) : CountriesRepository{
 
     override suspend fun getAllCountries(): AppResult<List<CountriesData>> {
-        if(isOnline(context)){
-            return try {
-                val response = api.getAllCountries()
+        val dbValues = getCountriesDataFromCache()
 
-                if (response.isSuccessful){
-                   response.body()?.let {
-                       withContext(Dispatchers.IO) { dao.add(it)}
-                   }
-                    handleSuccess(response)
-                } else{
-                    handleApiError(response)
-                }
-            }catch (e: Exception) {
-                AppResult.Error(e)
+        when {
+            dbValues.isNotEmpty() -> {
+                Log.d(TAG, "from db")
+                return AppResult.Success(dbValues)
             }
-        }else{
-            val data = getCountriesDataFromCache()
-            return if(data.isNotEmpty()){
-                Log.d(TAG, "from fb")
-                AppResult.Success(data)
-            }else{
-                context.noNetworkConnectivityError()
+            isOnline(context) -> {
+                Log.d(TAG, "from network")
+                return try {
+                    val response = api.getAllCountries()
+
+                    if (response.isSuccessful){
+                        response.body()?.let {
+                            withContext(Dispatchers.IO) { dao.add(it)}
+                        }
+                        handleSuccess(response)
+                    } else{
+                        handleApiError(response)
+                    }
+                }catch (e: Exception) {
+                    AppResult.Error(e)
+                }
+            }
+            else -> {
+                return  context.noNetworkConnectivityError()
             }
         }
+    }
+
+    override suspend fun updateFavourite(countryId: Int, isFavourite: Boolean){
+        withContext(Dispatchers.IO) { dao.updateFavourite(countryId, isFavourite) }
     }
 
     private suspend fun getCountriesDataFromCache(): List<CountriesData>{

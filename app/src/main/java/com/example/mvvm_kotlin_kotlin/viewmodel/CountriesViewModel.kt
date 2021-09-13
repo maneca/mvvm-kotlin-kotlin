@@ -4,7 +4,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.databinding.ObservableBoolean
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
 import com.example.mvvm_kotlin_kotlin.repository.CountriesRepository
@@ -36,6 +35,17 @@ class CountriesViewModel(private val repository: CountriesRepository) : ViewMode
                     showError.value = null
                 }
                 is AppResult.Error -> showError.value = result.exception.message
+            }
+        }
+    }
+
+    fun updateFavourite(countryId: Int, isFavourite: Boolean){
+
+        viewModelScope.launch {
+            try {
+                repository.updateFavourite(countryId, isFavourite)
+            } catch (e: Exception) {
+                showError.value = e.message
             }
         }
     }

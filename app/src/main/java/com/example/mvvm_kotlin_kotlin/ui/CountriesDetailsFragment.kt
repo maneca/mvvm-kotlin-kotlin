@@ -35,6 +35,8 @@ import androidx.fragment.app.Fragment
 import coil.annotation.ExperimentalCoilApi
 import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
 import com.example.mvvm_kotlin_kotlin.utils.LoadPicture
+import com.example.mvvm_kotlin_kotlin.viewmodel.CountriesViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CountriesDetailsFragment : Fragment() {
 
@@ -47,13 +49,14 @@ class CountriesDetailsFragment : Fragment() {
         }
     }
 
+    private val countriesViewModel by viewModel<CountriesViewModel>()
 
     @ExperimentalCoilApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val country: CountriesData? = arguments?.getParcelable("country_data_row")
 
@@ -69,7 +72,7 @@ class CountriesDetailsFragment : Fragment() {
     @Composable
     fun MainContent(country: CountriesData) {
         val scrollState = rememberScrollState()
-        val (isChecked, setChecked) = remember { mutableStateOf(false) }
+        val (isChecked, setChecked) = remember { mutableStateOf(country.isFavourite) }
 
         Column(
             modifier = Modifier
@@ -108,7 +111,11 @@ class CountriesDetailsFragment : Fragment() {
                         )
                         FavoriteButton(
                             isChecked = isChecked,
-                            onClick = { setChecked(!isChecked) }
+                            onClick = {
+                                setChecked(!isChecked)
+                                countriesViewModel.updateFavourite(country.id, !isChecked)
+                                country.isFavourite = !isChecked
+                            }
                         )
                     }
                     country.capital?.let { capital ->
