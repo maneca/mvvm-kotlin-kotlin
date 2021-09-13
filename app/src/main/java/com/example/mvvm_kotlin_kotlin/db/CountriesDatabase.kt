@@ -11,8 +11,8 @@ import com.example.mvvm_kotlin_kotlin.db.model.Languages
 import com.example.mvvm_kotlin_kotlin.db.model.Translations
 
 @Database(
-    entities = [CountriesData::class, Translations::class, Languages::class, Currencies::class],
-    version = 2, exportSchema = false
+    entities = [CountriesData::class],
+    version = 1, exportSchema = false
 )
 
 @TypeConverters(Converters::class, TranslationsConverter::class, LanguagesConverter::class, CurrenciesConverter::class)

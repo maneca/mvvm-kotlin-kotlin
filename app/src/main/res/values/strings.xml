@@ -2,9 +2,12 @@
     <string name="app_name">mvvm-kotlin-kotlin</string>
     <string name="no_network_connectivity">You are not connected to the internet</string>
     <string name="BASE_URL">https://restcountries.eu</string>
-    <string name="country_region">Country Region :</string>
+    <string name="country_region">Region:</string>
     <string name="country_currency">Currency: </string>
-    <string name="country_sub_region">Country SubRegion :</string>
-    <string name="country_language">Country Languages :</string>
+    <string name="country_sub_region">SubRegion:</string>
+    <string name="country_area">Area: </string>
+    <string name="country_borders">Borders: </string>
+    <string name="country_language">Languages:</string>
     <string name="country_capital">Capital: </string>
+    <string name="country_translations">Translations:</string>
 </resources>

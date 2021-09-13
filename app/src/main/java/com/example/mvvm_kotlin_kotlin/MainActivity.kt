@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
-import com.example.mvvm_kotlin_kotlin.ui.CountriesFragment
-import com.example.mvvm_kotlin_kotlin.utils.replaceFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

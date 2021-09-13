@@ -5,10 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "Currency")
 @Parcelize
 class Currencies (
-    @PrimaryKey(autoGenerate = true) val id: Int,
     val code: String?,
     val name: String?,
     val symbol: String?

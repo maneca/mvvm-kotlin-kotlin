@@ -39,13 +39,15 @@ import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
 import com.example.mvvm_kotlin_kotlin.R
 import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
+import com.example.mvvm_kotlin_kotlin.utils.LoadPicture
 import com.example.mvvm_kotlin_kotlin.viewmodel.CountriesViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CountriesFragment : Fragment() {
     private val countriesViewModel by viewModel<CountriesViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    @ExperimentalCoilApi
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
          return ComposeView(requireContext()).apply {
             setContent {
                 val countries = countriesViewModel.countriesList.value
@@ -64,6 +66,7 @@ class CountriesFragment : Fragment() {
 
     }
 
+    @ExperimentalCoilApi
     @Composable
     fun CountriesList(countries: List<CountriesData>){
         LazyColumn(modifier = Modifier
@@ -86,7 +89,7 @@ class CountriesFragment : Fragment() {
                 .fillMaxHeight()
                 .padding(2.dp)
                 .clickable {
-                    val bundle : Bundle = Bundle()
+                    val bundle = Bundle()
                     bundle.putParcelable("country_data_row", country)
                     findNavController().navigate(R.id.view_country_details, bundle)
                 },
@@ -124,29 +127,5 @@ class CountriesFragment : Fragment() {
             }
         }
 
-    }
-
-    @ExperimentalCoilApi
-    @SuppressLint("UnrememberedMutableState")
-    @Composable
-    fun LoadPicture(url: String){
-        val imageLoader = ImageLoader.Builder(LocalContext.current)
-            .componentRegistry {
-                add(SvgDecoder(LocalContext.current))
-            }
-            .build()
-
-        CompositionLocalProvider(LocalImageLoader provides imageLoader) {
-            val painter = rememberImagePainter(url)
-
-            Image(
-                painter = painter,
-                contentDescription = "SVG Image",
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.FillBounds
-            )
-        }
     }
 }
