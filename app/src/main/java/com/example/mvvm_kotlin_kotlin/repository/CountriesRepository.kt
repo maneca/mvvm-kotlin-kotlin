@@ -8,4 +8,6 @@ interface CountriesRepository {
     suspend fun getAllCountries(): AppResult<List<CountriesData>>
 
     suspend fun updateFavourite(countryId: Int, isFavourite: Boolean)
+
+    suspend fun getFavourites(): AppResult<List<CountriesData>>
 }

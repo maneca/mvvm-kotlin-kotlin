@@ -10,4 +10,6 @@
     <string name="country_language">Languages:</string>
     <string name="country_capital">Capital: </string>
     <string name="country_translations">Translations:</string>
+    <string name="error_title">Error</string>
+    <string name="dismiss_button">OK</string>
 </resources>

@@ -176,15 +176,4 @@ class CountriesDetailsFragment : Fragment() {
             style = TextStyle(fontSize = 15.sp)
         )
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        //enableBackButton()
-    }
-
-    private fun enableBackButton() {
-        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as? AppCompatActivity)?.supportActionBar?.setHomeButtonEnabled(true)
-    }
-
 }

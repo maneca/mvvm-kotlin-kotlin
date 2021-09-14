@@ -15,6 +15,9 @@ interface CountriesDao {
     @Query("UPDATE Countries SET isFavourite = :isFavourite WHERE id = :countryId")
     fun updateFavourite(countryId: Int, isFavourite: Boolean)
 
+    @Query("SELECT * FROM COUNTRIES WHERE isFavourite = :isFavourite")
+    fun getFavourites(isFavourite: Boolean): List<CountriesData>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(users: List<CountriesData>)
 }

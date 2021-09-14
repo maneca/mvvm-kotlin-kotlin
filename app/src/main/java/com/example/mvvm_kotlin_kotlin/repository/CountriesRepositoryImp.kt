@@ -56,6 +56,12 @@ class CountriesRepositoryImp(
         withContext(Dispatchers.IO) { dao.updateFavourite(countryId, isFavourite) }
     }
 
+    override suspend fun getFavourites(): AppResult<List<CountriesData>>{
+        val favourites = withContext(Dispatchers.IO) { dao.getFavourites(true) }
+
+        return AppResult.Success(favourites)
+    }
+
     private suspend fun getCountriesDataFromCache(): List<CountriesData>{
         return withContext(Dispatchers.IO) { dao.findAll() }
     }

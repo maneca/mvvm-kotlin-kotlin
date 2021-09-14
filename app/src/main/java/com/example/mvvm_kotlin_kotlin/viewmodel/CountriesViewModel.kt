@@ -15,26 +15,34 @@ class CountriesViewModel(private val repository: CountriesRepository) : ViewMode
 
     val showLoading = ObservableBoolean()
     val countriesList : MutableState<List<CountriesData>> = mutableStateOf(ArrayList())
+    var backupCountriesList : List<CountriesData> = listOf()
     val showError = SingleLiveEvent<String?>()
 
     init {
         getAllCountries()
     }
 
-    private fun getAllCountries() {
+    fun getAllCountries() {
 
         showLoading.set(true)
 
-        viewModelScope.launch {
-            val result = repository.getAllCountries()
-
+        if(backupCountriesList.isNotEmpty()){
             showLoading.set(false)
-            when(result){
-                is AppResult.Success -> {
-                    countriesList.value = result.successData
-                    showError.value = null
+            countriesList.value = backupCountriesList
+            showError.value = null
+        }else{
+            viewModelScope.launch {
+                val result = repository.getAllCountries()
+
+                showLoading.set(false)
+                when(result){
+                    is AppResult.Success -> {
+                        countriesList.value = result.successData
+                        backupCountriesList = result.successData
+                        showError.value = null
+                    }
+                    is AppResult.Error -> showError.value = result.exception.message
                 }
-                is AppResult.Error -> showError.value = result.exception.message
             }
         }
     }
@@ -47,6 +55,16 @@ class CountriesViewModel(private val repository: CountriesRepository) : ViewMode
             } catch (e: Exception) {
                 showError.value = e.message
             }
+        }
+    }
+
+    fun getFavourites(){
+        viewModelScope.launch {
+            when(val favourites = repository.getFavourites()){
+                is AppResult.Success ->
+                    countriesList.value = favourites.successData
+            }
+
         }
     }
 }
