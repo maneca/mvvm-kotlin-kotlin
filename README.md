@@ -10,3 +10,7 @@ Frameworks used:
   - Architectural components (LiveData, Room)
   - [Koin](https://insert-koin.io/)
   - [Retrofit](https://square.github.io/retrofit/)
+
+Unit tests implemented using:
+  - JUnit 4
+  - [Mockito](https://site.mockito.org/)
