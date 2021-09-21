@@ -5,17 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import coil.annotation.ExperimentalCoilApi
-import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
+import com.example.mvvm_kotlin_kotlin.db.model.Country
 import com.example.mvvm_kotlin_kotlin.utils.LoadPicture
 import com.example.mvvm_kotlin_kotlin.viewmodel.CountriesViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -42,7 +37,7 @@ class CountriesDetailsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(data: CountriesData) = CountriesDetailsFragment().apply {
+        fun newInstance(data: Country) = CountriesDetailsFragment().apply {
             arguments = Bundle().apply {
                 putParcelable("country_data_row", data)
             }
@@ -58,7 +53,7 @@ class CountriesDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val country: CountriesData? = arguments?.getParcelable("country_data_row")
+        val country: Country? = arguments?.getParcelable("country_data_row")
 
         return ComposeView(requireContext()).apply {
             setContent {
@@ -70,7 +65,7 @@ class CountriesDetailsFragment : Fragment() {
 
     @ExperimentalCoilApi
     @Composable
-    fun MainContent(country: CountriesData) {
+    fun MainContent(country: Country) {
         val scrollState = rememberScrollState()
         val (isChecked, setChecked) = remember { mutableStateOf(country.isFavourite) }
 

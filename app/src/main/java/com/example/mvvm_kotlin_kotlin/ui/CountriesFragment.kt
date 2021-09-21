@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,7 +33,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.mvvm_kotlin_kotlin.R
-import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
+import com.example.mvvm_kotlin_kotlin.db.model.Country
 import com.example.mvvm_kotlin_kotlin.utils.LoadPicture
 import com.example.mvvm_kotlin_kotlin.viewmodel.CountriesViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -44,6 +45,7 @@ class CountriesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
          return ComposeView(requireContext()).apply {
             setContent {
+                val selectedTab = remember { mutableStateOf(0) }
                 val countries = countriesViewModel.countriesList.value
                 val loading = countriesViewModel.showLoading.get()
                 val error = countriesViewModel.showError.value
@@ -58,9 +60,9 @@ class CountriesFragment : Fragment() {
                         ErrorDialog(message = error)
                     else ->
                         Scaffold(
-                            bottomBar = { AppBottomBar() }
+                            bottomBar = { AppBottomBar(selectedTab) }
                         ){
-                            CountriesList(countries)
+                            CountriesList(countries, selectedTab)
                         }
                 }
             }
@@ -70,12 +72,20 @@ class CountriesFragment : Fragment() {
 
     @ExperimentalCoilApi
     @Composable
-    fun CountriesList(countries: List<CountriesData>){
+    fun CountriesList(countries: List<Country>, selectedTab: MutableState<Int>){
+        //val allcountries = countries
+        var filteredCountries: List<Country>
         LazyColumn(modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
         ) {
-            items(countries) { country ->
+            filteredCountries = if (selectedTab.value == 0){
+                countries
+            }else{
+                countries.filter { it.isFavourite }
+            }
+
+            items(filteredCountries) { country ->
                 CountryItem(country = country)
             }
         }
@@ -83,7 +93,7 @@ class CountriesFragment : Fragment() {
 
     @ExperimentalCoilApi
     @Composable
-    fun CountryItem(country: CountriesData){
+    fun CountryItem(country: Country){
         Card(
             modifier = Modifier
                 .background(shape = RoundedCornerShape(10.dp), color = Color.LightGray)
@@ -130,10 +140,8 @@ class CountriesFragment : Fragment() {
         }
     }
 
-    @Preview
     @Composable
-    fun AppBottomBar() {
-        val selectedState = remember { mutableStateOf(0) }
+    fun AppBottomBar(selectedTab: MutableState<Int>) {
 
         BottomAppBar(
             elevation = 10.dp,
@@ -146,10 +154,10 @@ class CountriesFragment : Fragment() {
                 selectedContentColor= Color.White,
                 unselectedContentColor= Color.White.copy(alpha = 0.4f),
                 onClick = {
-                    selectedState.value = 0
+                    selectedTab.value = 0
                     countriesViewModel.getAllCountries()
                 },
-                selected = selectedState.value == 0
+                selected = selectedTab.value == 0
             )
 
             BottomNavigationItem(
@@ -159,10 +167,9 @@ class CountriesFragment : Fragment() {
                 selectedContentColor= Color.White,
                 unselectedContentColor= Color.White.copy(alpha = 0.4f),
                 onClick = {
-                    selectedState.value = 1
-                    countriesViewModel.getFavourites()
+                    selectedTab.value = 1
                 },
-                selected = selectedState.value == 1
+                selected = selectedTab.value == 1
             )
         }
     }

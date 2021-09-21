@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.mvvm_kotlin_kotlin.api.CountriesApi
 import com.example.mvvm_kotlin_kotlin.db.dao.CountriesDao
-import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
+import com.example.mvvm_kotlin_kotlin.db.model.Country
 import com.example.mvvm_kotlin_kotlin.utils.AppResult
 import com.example.mvvm_kotlin_kotlin.utils.NetworkManager.isOnline
 import com.example.mvvm_kotlin_kotlin.utils.TAG
@@ -21,7 +21,7 @@ class CountriesRepositoryImp(
     private val dao: CountriesDao
 ) : CountriesRepository{
 
-    override suspend fun getAllCountries(): AppResult<List<CountriesData>> {
+    override suspend fun getAllCountries(): AppResult<List<Country>> {
         val dbValues = getCountriesDataFromCache()
 
         when {
@@ -36,7 +36,7 @@ class CountriesRepositoryImp(
 
                     if (response.isSuccessful){
                         response.body()?.let {
-                            withContext(Dispatchers.IO) { dao.add(it)}
+                            withContext(Dispatchers.IO) { dao.addCountries(it)}
                         }
                         handleSuccess(response)
                     } else{
@@ -52,18 +52,23 @@ class CountriesRepositoryImp(
         }
     }
 
-    override suspend fun updateFavourite(countryId: Int, isFavourite: Boolean){
-        withContext(Dispatchers.IO) { dao.updateFavourite(countryId, isFavourite) }
+    override suspend fun updateFavourite(countryId: Int, isFavourite: Boolean): AppResult<Boolean>{
+        return try {
+            withContext(Dispatchers.IO) { dao.updateFavourite(countryId, isFavourite) }
+            AppResult.Success(true)
+        }catch (e: Exception){
+            AppResult.Error(e)
+        }
     }
 
-    override suspend fun getFavourites(): AppResult<List<CountriesData>>{
+    override suspend fun getFavourites(): AppResult<List<Country>>{
         val favourites = withContext(Dispatchers.IO) { dao.getFavourites(true) }
 
         return AppResult.Success(favourites)
     }
 
-    private suspend fun getCountriesDataFromCache(): List<CountriesData>{
-        return withContext(Dispatchers.IO) { dao.findAll() }
+    private suspend fun getCountriesDataFromCache(): List<Country>{
+        return withContext(Dispatchers.IO) { dao.getAllCountries() }
     }
 
 }

@@ -4,20 +4,20 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
+import com.example.mvvm_kotlin_kotlin.db.model.Country
 
 @Dao
 interface CountriesDao {
 
     @Query("SELECT * FROM Countries")
-    fun findAll(): List<CountriesData>
+    fun getAllCountries(): List<Country>
 
     @Query("UPDATE Countries SET isFavourite = :isFavourite WHERE id = :countryId")
     fun updateFavourite(countryId: Int, isFavourite: Boolean)
 
     @Query("SELECT * FROM COUNTRIES WHERE isFavourite = :isFavourite")
-    fun getFavourites(isFavourite: Boolean): List<CountriesData>
+    fun getFavourites(isFavourite: Boolean): List<Country>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun add(users: List<CountriesData>)
+    fun addCountries(users: List<Country>)
 }

@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.viewModelScope
-import com.example.mvvm_kotlin_kotlin.db.model.CountriesData
+import com.example.mvvm_kotlin_kotlin.db.model.Country
 import com.example.mvvm_kotlin_kotlin.repository.CountriesRepository
 import com.example.mvvm_kotlin_kotlin.utils.AppResult
 import com.example.mvvm_kotlin_kotlin.utils.SingleLiveEvent
@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 class CountriesViewModel(private val repository: CountriesRepository) : ViewModel() {
 
     val showLoading = ObservableBoolean()
-    val countriesList : MutableState<List<CountriesData>> = mutableStateOf(ArrayList())
-    var backupCountriesList : List<CountriesData> = listOf()
+    val countriesList : MutableState<List<Country>> = mutableStateOf(ArrayList())
+    var backupCountriesList : List<Country> = listOf()
     val showError = SingleLiveEvent<String?>()
 
     init {
@@ -50,10 +50,12 @@ class CountriesViewModel(private val repository: CountriesRepository) : ViewMode
     fun updateFavourite(countryId: Int, isFavourite: Boolean){
 
         viewModelScope.launch {
-            try {
-                repository.updateFavourite(countryId, isFavourite)
-            } catch (e: Exception) {
-                showError.value = e.message
+            when(val result = repository.updateFavourite(countryId, isFavourite)){
+                is AppResult.Success ->
+                    showError.value = null
+
+                is AppResult.Error ->
+                    showError.value = result.exception.message
             }
         }
     }
@@ -63,6 +65,8 @@ class CountriesViewModel(private val repository: CountriesRepository) : ViewMode
             when(val favourites = repository.getFavourites()){
                 is AppResult.Success ->
                     countriesList.value = favourites.successData
+                is AppResult.Error ->
+                    showError.value = favourites.exception.message
             }
 
         }

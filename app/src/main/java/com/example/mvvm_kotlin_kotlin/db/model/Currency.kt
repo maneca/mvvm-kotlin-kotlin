@@ -6,9 +6,8 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Languages(
-    val iso639_1: String?,
-    val iso639_2: String?,
+class Currency (
+    val code: String?,
     val name: String?,
-    val nativeName: String?
-) : Parcelable
+    val symbol: String?
+): Parcelable
