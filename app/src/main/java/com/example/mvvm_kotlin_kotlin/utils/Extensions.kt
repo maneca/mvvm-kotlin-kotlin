@@ -2,7 +2,6 @@ package com.example.mvvm_kotlin_kotlin.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -14,9 +13,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.LocalImageLoader
@@ -32,19 +28,6 @@ val Any.TAG: String
 
 fun Context.noNetworkConnectivityError(): AppResult.Error {
     return AppResult.Error(Exception(this.resources.getString(R.string.no_network_connectivity)))
-}
-
-fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int, backStackTag: String? = null) {
-    supportFragmentManager.inTransaction {
-        add(frameId, fragment)
-        backStackTag?.let { addToBackStack(fragment.javaClass.name) }
-    }
-}
-
-inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
-    val fragmentTransaction = beginTransaction()
-    fragmentTransaction.func()
-    fragmentTransaction.commit()
 }
 
 @ExperimentalCoilApi
